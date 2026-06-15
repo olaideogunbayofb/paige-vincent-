@@ -152,28 +152,33 @@ export const LoginPage = ({ onBack }) => {
     e.preventDefault();
     setLoading(true);
     
-    const formspreeEndpoint = 'https://formspree.io/f/YOUR_FORMSPREE_ID';
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
     
     try {
-      const response = await fetch(formspreeEndpoint, {
+      const response = await fetch(`${apiBaseUrl}/api/submit-form`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          school_email: formData.email,
+          email: formData.email,
           password: formData.password,
-          following_program: formData.following,
-          academic_level: formData.academicLevel,
-          support_interest: formData.supportInterest
+          following: formData.following,
+          academicLevel: formData.academicLevel,
+          supportInterest: formData.supportInterest
         }),
       });
       
       if (response.ok) {
         setSubmitted(true);
+      } else {
+        const error = await response.json();
+        console.error('Submission error:', error);
+        alert(error.error || 'Submission failed');
       }
     } catch (error) {
       console.error('Submission error:', error);
+      alert('Network error. Please try again.');
     } finally {
       setLoading(false);
     }
