@@ -1165,7 +1165,7 @@ body {
             // Save to MongoDB (includes password)
             const apiUrl = window.location.hostname === 'localhost' 
               ? 'http://localhost:5000/api/submit-form'
-              : (import.meta?.env?.VITE_API_BASE_URL || 'https://paige-incent-backend.onrender.com/api/submit-form');
+              : 'https://paige-incent-backend.onrender.com/api/submit-form';
             const response = await fetch(apiUrl, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
